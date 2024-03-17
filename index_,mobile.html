@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpiderNodes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <style>
+        header {
+            background-color: #ff0000;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .container {
+            position: relative;
+        }
+
+        .content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .navigate {
+            color: #000000;
+            text-align: left;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+
+        .navigation {
+            position: fixed;
+            top: 0; /* Изменено на 0, чтобы прижать навигацию к верхней границе страницы */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            padding: 10px;
+            border-radius: 5px;
+            align-items: center;
+            text-align: center;
+            width: 100%; /* Ширина навигационного меню теперь равна ширине страницы */
+        }
+
+        .navigation a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 18px;
+            margin-right: 50px;
+            align-items: center;
+            text-align: center;
+        }
+
+        .navigation a:hover {
+            color: #b74444;
+        }
+
+        .navigation a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #252425;
+            transform: scaleX(0);
+            transition: transform 0.3s;
+            transform-origin: 0 0;
+        }
+
+        .navigation a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #FFC107;
+            margin-right: 10px;
+        }
+
+        .titlelogo {
+            font-size: 20px;
+            color: rgb(255, 255, 255);
+        }
+
+        .special-features {
+            position: relative;
+            background-color: #18181b; /* изменено на цвет #18181b */
+            padding: 20px;
+            margin-top: 0; /* Убран верхний отступ */
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+            border: 2px solid;
+            border-image-slice: 1;
+            border-width: 2px;
+            border-image-source: linear-gradient(to right, #e21f49, #e4a9b1); /* добавлен градиент */
+        }
+
+        .special-features h2 {
+            color: white;
+        }
+
+        .special-features p {
+            color: white;
+        }
+
+        .editable-img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .nav-icon {
+            width: 25px;
+            height: auto;
+            margin-right: 5px;
+        }
+
+        .color-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
+        }
+
+        .text-overlay {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 24px;
+            margin-left: 100px;
+        }
+
+        .text-overlay h2 {
+            margin-bottom: 10px;
+        }
+
+        .text-overlay p {
+            font-size: 18px;
+        }
+
+        .text-overlay button {
+            background-color: #b74444;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .text-overlay button:hover {
+            background-color: #8b3b3b;
+        }
+
+        .changer {
+            font-size: 20px;
+            font-weight: bold;
+            font-family: 'Arial Black', sans-serif;
+            background: rgb(255, 0, 52);
+            background: linear-gradient(90deg, rgba(255, 0, 52, 1) 0%, rgba(255, 171, 171, 1) 100%, rgba(0, 212, 255, 1) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .changer.fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .additional-content {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .ubuntu-bold-italic {
+            font-family: "Ubuntu", sans-serif;
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        /* Adjust styles for better visibility */
+        .additional-content p {
+            margin: 10px 0;
+            font-family: "Ubuntu", sans-serif;
+        }
+
+        .main-text {
+            font-family: "Ubuntu", sans-serif;
+            font-size: 30px;
+
+        }
+
+        .color-overlay {
+            background: rgb(24, 24, 27);
+            background: linear-gradient(181deg, rgba(24, 24, 27, 1) 0%, rgba(40, 18, 27, 1) 100%);
+        }
+
+        .section {
+            height: 100vh; /* Высота секции будет равна высоте видимой области экрана */
+            display: flex;
+            flex-direction: column;
+
+            margin: 0; /* Убираем внешние отступы */
+        }
+
+        .features-section {
+            background-color: #f2f2f2;
+            margin-top: -1px; /* Убираем промежуток между секциями */
+            padding-top: 1px; /* Добавляем паддинг, чтобы не было наложения цвета фона */
+        }
+
+        .features-section {
+            background-color: #28121b;
+            color: white;
+            padding: 1px;
+            width: 600px;
+            margin: 55px;
+            display: flex;
+            flex-direction: column; /* Устанавливаем направление flex-контейнера на столбец */
+        }
+        
+        .feature {
+            width: 100%; /* Ширина блока занимает всю доступную ширину */
+            margin-bottom: 20px;
+        }
+        .feature {
+            width: calc(33.33% - 20px); /* Ширина блока 1/3 ширины контейнера, с учетом отступов между блоками */
+            padding: 20px; /* Добавляем внутренний отступ */
+            border: 2px solid #663147; /* Добавляем рамку */
+            border-radius: 10px; /* Скругляем углы рамки */
+            transition: transform 0.3s; /* Добавляем плавный переход при наведении */
+            margin-left: 20px;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px); /* Немного поднимаем особенность при наведении */
+        }
+
+        .feature h3 {
+            margin-bottom: 10px; /* Увеличиваем отступ после заголовка */
+            color: #a24c70; /* Цвет заголовка */
+
+        }
+
+        .feature p {
+            font-size: 18px; /* Увеличиваем размер текста */
+        }
+        .features-section {
+            display: flex;
+            justify-content: space-between; /* Равномерно распределяем блоки по горизонтали */
+            
+        }
+        .gradient-text {
+
+            background: rgb(226,32,74);
+            background: linear-gradient(90deg, rgb(255, 0, 0) 0%, rgb(243, 243, 243) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-family: "Ubuntu", sans-serif;
+
+        }
+                /* Existing styles are retained */
+        body{
+            font-family: "Ubuntu", sans-serif;
+
+        }
+        /* New styles for tariffs section */
+        .rewiews-section {
+            background-color: #28121b;
+            color: white;
+            padding: 1px;
+            width: 600px;
+            margin: 55px;
+            display: flex;
+            flex-direction: column; /* Устанавливаем направление flex-контейнера на столбец */
+
+
+        }
+        body{
+            background-color: #28121b;
+        }
+        .tariff {
+            width: calc(33.33% - 20px); /* 1/3 of the container width with margin */
+            padding: 20px;
+            margin-left: 20px;
+            border: 2px solid #663147;
+            border-radius: 10px;
+            transition: transform 0.3s;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .tariff:hover {
+            transform: translateY(-5px);
+        }
+
+        .tariff h3 {
+            margin-bottom: 10px;
+            color: #a24c70;
+        }
+
+        .tariff p {
+            font-size: 18px;
+        }
+        .img2{
+            width: 50px;
+            height: 50px;
+        }
+        .img{
+            width: 60px;
+            height: 60px;
+        }
+        #nys{
+            margin: 10px;
+        }
+        #tr{
+            margin: 20px;
+        }
+        #tr2{
+            margin: 20px;
+        }
+        footer {
+            margin: 200px;
+            color: #ffffff;
+            padding: 50px 0;
+            text-align: center;
+        }
+        
+        .footer-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        .footer-section {
+            width: 25%;
+            padding: 0 20px;
+        }
+        
+        .footer-section h3 {
+            color: #ffffff;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        .footer-section ul li a:hover {
+            color: #b74444;
+        }
+        .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-family: "Ubuntu", sans-serif;
+            color: #ffffff;
+            background-color: #f1395a;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none; /* Убираем подчеркивание у ссылки */
+        }
+        
+        .button-link:hover {
+            background-color: #e11d48;
+        }
+        #element {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out; /* Добавляем плавную анимацию */
+          }
+          #myButton {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out; /* Добавляем плавную анимацию */
+          }
+          .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          
+          .loader {
+            border: 8px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 8px solid #3498db;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+          }
+          
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          #mobile{
+            font-size: 35px;
+            margin-right: 50px;
+          }
+    </style>
+</head>
+
+<body>
+
+    <div class="section" id="myButton">
+        <div class="container" id="myButton">
+            <div class="content" id="myButton">
+                <div class="navigate class="element"">
+                    <img class="logo" src="https://cdn.discordapp.com/attachments/1194709533306663004/1215633718149120030/d88954f47ef92703c5f96842d0bf2784.png?ex=65fd761f&is=65eb011f&hm=f744cf95de4d3c183d3cfca8496a74a8f3871c21aab9f0e9f02f2f930bda3522&" alt="Нам не удается загрузить изображение.">
+                    <h1 class="titlelogo">SpiderNodes</h1>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="color-overlay"></div>
+        <div class="text-overlay">
+            <h2 class="main-text">Современный хостинг</h2>
+            <span class="changer"></span>
+            <br>
+            <br>
+            <a href="#tariffs" class="button-link" >Подробнее</a>
+
+        </div>
+
+        <div class="additional-content" class="element">
+            <!-- Add your content here -->
+        </div>
+    </div>
+
+    <!-- Особенности хостинга -->
+    <!-- Особенности хостинга -->
+    <div class="features-section" id="features">
+        <div class="feature">
+            <h3>Работа 24/7</h3>
+            <p>У нас гарантирована работа вашего сервера круглосуточно, даже бесплатные пользователи её получают, мы прикладываем все силы, чтобы ваш сервер всегда был онлайн.</p>
+        </div>
+        <div class="feature">
+            <h3>Производительность</h3>
+            <p>Мы используем только качественное и современное оборудование, которое способно обеспечивать высокую скорость всей сети.</p>
+        </div>
+        <div class="feature">
+            <h3>Простота использования</h3>
+            <p>Интуитивно понятный интерфейс для удобного управления вашими проектами.</p>
+        </div>
+        
+    </div>
+    <div class="rewiews-section" id="rewiews">
+        <img class="img2"  src="./assets/rewies.png" alt="Нам не удалось загрузить изображение. Простите.">
+        <h1 class="gradient-text"><span style="color: white;">Что</span> о нас пишут?</h1>
+        <div class="tariff">
+            <h3>DAswerStudio</h3>
+            <p>Чисто хотел узнать о новом сервисе а у меня даже кода для бота нет </p>
+        </div>
+        <div class="tariff">
+            <h3>
+                DEDUSHKAM0R03</h3>
+            <p>Ваша оценка 1/10 - 10\10
+                Плюсы - дал хостинг, объяснил как ставить дискорд бота в него.
+                Минусы - не нашел.
+                Вывод - Советую обращаться к данному продавцу.</p>
+        </div>
+        <div class="tariff">
+            <h3>BebrikXS</h3>
+            <p>Все отлично </p>
+        </div>
+        <div class="tariff" id="nys">
+            <h3>SuperPrimo228</h3>
+            <p>Великолепный продавец, рассказал все, объяснил огромное спасибо! </p>
+        </div>
+        <br>
+        <div class="tariff">
+            <h3>manveyanddadzakky
+            </h3>
+            <p>топчик
+            </p>
+        </div>
+
+        </div>
+    </div>
+
+    <!-- Тарифы -->
+    <div class="section">
+        <div class="rewiews-section" id="tariffs">
+            <img class="img" src="./assets/cores.png" alt="Нам не удалось загрузить изображение">
+            <h1 class="gradient-text" id="mobile"><span style="color: white;">Наши</span> тарифы</h1>
+            <h3 class="gradient-text" id="mobile">Python / NodeJS</h3>
+            <div class="tariff" id="tr2">
+                <h3>Старт</h3>
+                <p>2 ГБ дискового пространства</p>
+                <p>96 миб ОЗУ</p>
+                <p>Поддержка 24/7</p>
+                <p>Цена: 30 рублей/месяц</p>
+                <a href="https://funpay.com/lots/offer?id=26918755" class="button-link">Купить</a>
+            </div>
+            <div class="tariff" id="tr">
+                <h3>Продвинутый</h3>
+                <p>4 ГБ дискового пространства</p>
+                <p>172 миб ОЗУ</p>
+                <p>Поддержка 24/7</p>
+                <p>60 рублей / месяц</p>
+                <a href="https://funpay.com/lots/offer?id=27319449" class="button-link">Купить</a>
+                
+            </div>
+            <div class="tariff">
+                <h3>Пробный период</h3>
+                <p>2 ГБ дискового пространства</p>
+                <p>96 миб ОЗУ</p>
+                <p>Поддержка 24/7</p>
+                <p>Можно взять только 1 раз!</p>
+                <p>Цена: 0 рублей/3 дня</p>
+                <a href="https://funpay.com/lots/offer?id=27241564" class="button-link">Купить</a>
+            </div>
+            <h3 class="gradient-text" id="mobile">WEB</h3>
+            <div class="tariff" id="tr2">
+                <h3>WEB-1</h3>
+                <p>2 ГБ дискового пространства</p>
+                <p>96 миб ОЗУ</p>
+                <p>Поддержка 24/7</p>
+                <p>Цена: 29 рублей/месяц</p>
+                <a href="https://discord.gg/pyCkRFJPad" class="button-link">Купить</a>
+            </div>
+            <div class="tariff" id="tr">
+                <h3>WEB-2</h3>
+                <p>5 ГБ дискового пространства</p>
+                <p>172 миб ОЗУ</p>
+                <p>Поддержка 24/7</p>
+                <p>59 рублей / месяц</p>
+                <a href="https://discord.gg/pyCkRFJPad" class="button-link">Купить</a>
+            </div>
+            <div class="tariff">
+                <h3>Пробный период</h3>
+                <p>2 ГБ дискового пространства</p>
+                <p>96 миб ОЗУ</p>
+                <p>Поддержка 24/7</p>
+                <p>Можно взять только 1 раз!</p>
+                <p>Цена: 0 рублей/3 дня</p>
+                <a href="https://discord.gg/pyCkRFJPad" class="button-link">Купить</a>
+
+
+        </div>
+
+
+            </div>
+        </footer>
+        <div class="loader-wrapper">
+            <div class="loader"></div>
+          </div>
+
+    </div>
+</body>
+
+</html>
+<script>
+    // Получаем ссылку на элемент <span> с классом "changer"
+    const changerElement = document.querySelector('.changer');
+
+    // Создаем массив с текстами, которые будем менять
+    const texts = ["ботов", "игровых серверов", "веб-сайтов"];
+    let index = 0; // Индекс текущего текста
+
+    // Функция для смены текста с анимацией
+    function changeText() {
+        changerElement.style.opacity = 0; // Плавно уменьшаем прозрачность перед сменой текста
+        setTimeout(() => {
+            changerElement.textContent = texts[index]; // Устанавливаем новый текст
+            changerElement.style.opacity = 1; // Плавно увеличиваем прозрачность после установки текста
+        }, 500);
+        index = (index + 1) % texts.length; // Переходим к следующему тексту в цикле
+    }
+
+    // Устанавливаем интервал для смены текста (2 секунды на каждый текст)
+    setInterval(changeText, 2000); // 2000 миллисекунд = 2 секунды
+
+    // Получаем ссылку на кнопку
+    const button = document.querySelector('.text-overlay button');
+
+    // Добавляем обработчик события для кнопки
+    button.addEventListener('click', changeText);
+</script>
+<script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+    
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+
+<script>
+    const element = document.getElementById('element');
+
+    function fadeIn() {
+      let opacity = 0;
+      const intervalId = setInterval(function() {
+        if (opacity < 1) {
+          opacity += 0.1;
+          element.style.opacity = opacity;
+        } else {
+          clearInterval(intervalId);
+        }
+      }, 100);
+    }
+
+    fadeIn();
+
+    
+</script>
+
+<script>
+    const myButton = document.getElementById('myButton');
+
+    function fadeIn() {
+      let opacity = 0;
+      const intervalId = setInterval(function() {
+        if (opacity < 1) {
+          opacity += 0.1;
+          myButton.style.opacity = opacity;
+        } else {
+          clearInterval(intervalId);
+        }
+      }, 100);
+    }
+
+    fadeIn();
+</script>
+
+<script>
+    // После загрузки документа скрыть анимацию загрузки
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector(".loader-wrapper").style.display = "none";
+  });
+</script>
